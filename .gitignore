@@ -6,6 +6,9 @@
 .idea
 *.iml
 
+#project
+/temp
+
 # Package Files #
 *.jar
 *.war
