@@ -8,14 +8,14 @@ import java.net.URLClassLoader;
 //todo try to init class loader only once for several loading
 public class BaseClassLoader {
 
-    static URLClassLoader classLoader = null;
+    private static URLClassLoader classLoader = null;
 
     public static Class uriLoadClass(File root, String className) {
         Class cl = null;
 
         try {
             if (classLoader == null)
-                classLoader = URLClassLoader.newInstance(new URL[]{root.toURI().toURL()});
+                classLoader = URLClassLoader.newInstance(new URL[]{root.toURI().toURL()}, BaseClassLoader.class.getClassLoader());
 
             cl =  Class.forName(className, true, classLoader);
         } catch (ClassNotFoundException | MalformedURLException e) {

@@ -204,7 +204,4 @@ public class ConstructorTaskFrame extends JFrame {
         return dataPoint;
     }
 
-    public static void main(String[] args) {
-        new ConstructorTaskFrame(new DataHolder());
-    }
 }

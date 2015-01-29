@@ -20,11 +20,9 @@ public class DataHolder {
         tasks = new ArrayList<>();
     }
 
-    private void init(){
-
-    }
 
     public void addNewTask(Task t){
+
         tasks.add(t);
     }
 

@@ -20,8 +20,6 @@ public class RunMenuFrame {
 
     public static void main(String[] args) throws FileNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
 
-
-
         new MenuFrame(new TaskRunFacade(), new DataHolder(), new FileDAOImpl<Task>(RunMenuFrame.class.getClassLoader().getResource("tasks.txt").getFile()));
 
     }

@@ -1,13 +1,18 @@
 package ua.artcode.utils;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
- * Created by admin on 28.11.2014.
+ * Created by serhii on 26.01.15.
  */
-public class FileUtils {
+public final class IOUtils {
+
+    private IOUtils() {
+    }
 
     public static String getFile(String path){
         StringBuilder sb = new StringBuilder();
@@ -20,6 +25,19 @@ public class FileUtils {
             e.printStackTrace();
         }
         return sb.toString();
+    }
+
+    public static String getMessage(BufferedReader bf){
+        StringBuilder sb = new StringBuilder();
+        try {
+            while(bf.ready()){
+                sb.append(bf.readLine()).append("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sb.toString();
+
     }
 
 }

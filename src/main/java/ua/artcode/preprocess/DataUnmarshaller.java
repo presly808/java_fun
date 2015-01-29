@@ -5,7 +5,7 @@ import ua.artcode.model.test.TestArg;
 import ua.artcode.model.test.TestCase;
 
 
-public class DataUnmarshaler {
+public class DataUnmarshaller {
 
     public void convert(TestCase testCase) {
         for (DataPoint step : testCase.getDataPointList()) {
@@ -24,20 +24,28 @@ public class DataUnmarshaler {
         String type = arg.getType();
         String value = arg.getValue().toString();
         if ("byte".equals(type) || "java.lang.Byte".contains(type)) {
+            arg.setType("Byte");
             return unmarshalByte(value);
         } else if ("short".equals(type) || "java.lang.Short".contains(type)) {
+            arg.setType("Short");
             return unmarshalShort(value);
         } else if ("int".equals(type) || "java.lang.Integer".contains(type)) {
+            arg.setType("Integer");
             return unmarshalInteger(value);
         } else if ("long".equals(type) || "java.lang.Long".contains(type)) {
+            arg.setType("Long");
             return unmarshalLong(value);
         } else if ("float".equals(type) || "java.lang.Float".contains(type)) {
+            arg.setType("Float");
             return unmarshalFloat(value);
         } else if ("double".equals(type) || "java.lang.Double".contains(type)) {
+            arg.setType("Double");
             return unmarshalDouble(value);
         } else if ("boolean".equals(type) || "java.lang.Boolean".contains(type)) {
+            arg.setType("Boolean");
             return unmarshalBoolean(value);
         } else if ("char".equals(type) || "java.lang.Character".contains(type)) {
+            arg.setType("Character");
             return unmarshalCharacter(value);
         } else if ("String".equals(type) || "java.lang.String".contains(type)) {
             return arg.getValue();

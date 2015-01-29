@@ -4,16 +4,14 @@ import ua.artcode.model.test.TestCase;
 
 import java.io.Serializable;
 
-/**
- *
- */
 public class Task implements Serializable {
 
-    String title;
-    String description;
-    String example;
-    TaskMethod taskMethod;
-    TestCase testCase;
+    private String accessKey;
+    private String title;
+    private String description;
+    private String example;
+    private TaskMethod taskMethod;
+    private TestCase testCase;
 
     public Task() {
     }
@@ -30,6 +28,14 @@ public class Task implements Serializable {
         this.example = example;
         this.taskMethod = taskMethod;
         this.testCase = testCase;
+    }
+
+    public String getAccessKey() {
+        return accessKey;
+    }
+
+    public void setAccessKey(String accessKey) {
+        this.accessKey = accessKey;
     }
 
     public String getTitle() {

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sec="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="
+	    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+	    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	    http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+	    http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd
+	    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+       <!-- Autowiring -->
+       <context:annotation-config/>
+       <context:component-scan base-package="ua.artcode"/>
+
+       <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+              <property name="ignoreResourceNotFound" value="true"/>
+              <property name="locations">
+                     <list>
+                            <value>classpath:app.properties</value>
+                     </list>
+              </property>
+       </bean>
+
+       <import resource="repository-context.xml"/>
+
+       <aop:aspectj-autoproxy/>
+
+       <!--Spring mvc beans-->
+       <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+              <property name="prefix" value="/WEB-INF/pages/"/>
+              <property name="suffix" value=".jsp"/>
+       </bean>
+
+
+       <bean id="dynamicCompiler" class="ua.artcode.dynamic_compile.DynamicCompiler"/>
+
+       <bean id="dataUnmarshaller" class="ua.artcode.preprocess.DataUnmarshaller"/>
+
+
+       <bean id="velocityEngine"
+             class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+              <property name="velocityProperties">
+                     <props>
+                            <prop key="resource.loader">class</prop>
+                            <prop key="class.resource.loader.class">
+                                   org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+                            </prop>
+                     </props>
+              </property>
+       </bean>
+
+       <bean id="templateProcessor" class="ua.artcode.preprocess.TemplateProcessor">
+              <property name="velocityEngine" ref="velocityEngine"/>
+       </bean>
+
+       <bean id="taskRunner" class="ua.artcode.process.TaskRunFacade">
+              <constructor-arg name="templatePath" value="${velocity.template}"/>
+              <constructor-arg name="srcRoot">
+                     <bean class="java.io.File">
+                            <constructor-arg type="java.lang.String" value="${root.dynamic}"/>
+                     </bean>
+              </constructor-arg>
+              <constructor-arg name="dateConverter" ref="dataUnmarshaller"/>
+              <constructor-arg name="dynamicCompiler" ref="dynamicCompiler"/>
+              <constructor-arg name="templateProcessor" ref="templateProcessor"/>
+       </bean>
+
+
+       <!--temp data holder-->
+
+       <bean class="ua.artcode.db.DataHolder"/>
+
+       <bean class="ua.artcode.db.MapDataHolder"/>
+
+
+
+</beans>

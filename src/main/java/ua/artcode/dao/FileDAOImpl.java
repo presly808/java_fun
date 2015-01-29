@@ -10,7 +10,6 @@ public class FileDAOImpl<T> implements FileDAO <T>{
 
     private File location;
 
-
     public FileDAOImpl(String path) {
         this.location = new File(path);
     }

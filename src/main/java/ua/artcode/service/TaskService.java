@@ -6,13 +6,7 @@ import ua.artcode.model.test.TestCase;
 public interface TaskService {
 
 
-    public void addNewTask(String taskTitle, String taskDesc, String methodName,
-                           String methodExample, String expType, String expValue);
-
-
-
-
-
+    public void addNewTask(Task task);
 
 
 }
