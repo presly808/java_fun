@@ -30,7 +30,7 @@
     Example:<br>
     <code>25-2.45,12,12</code><br>
     <label>
-        <input type="text" name="data_points">
+        <textarea name="data_points" rows="10" cols="50"></textarea>
     </label><br>
 
     <input type="submit">

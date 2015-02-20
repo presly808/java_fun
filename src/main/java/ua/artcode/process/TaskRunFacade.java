@@ -4,7 +4,6 @@ import ua.artcode.dynamic_compile.*;
 import ua.artcode.exception.CompilationException;
 import ua.artcode.model.common.Task;
 import ua.artcode.model.test.TestArg;
-import ua.artcode.model.test.TestRunner;
 import ua.artcode.preprocess.DataUnmarshaller;
 import ua.artcode.preprocess.TemplateProcessor;
 
@@ -22,7 +21,6 @@ public class TaskRunFacade {
 
     public TaskRunFacade() {
         // init temp folder for task sources
-
     }
 
     public TaskRunFacade(String templatePath, File srcRoot, DataUnmarshaller dateConverter,
@@ -76,9 +74,7 @@ public class TaskRunFacade {
         return templateProcessor;
     }
 
-    public void setTemplateProcessor(TemplateProcessor templateProcessor) {
-        this.templateProcessor = templateProcessor;
-    }
+    public void setTemplateProcessor(TemplateProcessor templateProcessor) {this.templateProcessor = templateProcessor;}
 
     public File getSrcRoot() {
         return srcRoot;

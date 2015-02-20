@@ -13,6 +13,6 @@ public class ${className} implements MethodInvoker {
         return ${methodName}(#foreach($iter in $argsList)arg$iter.order#if($iter.order < $lastArgNum),#end#end);
     }
 
-    ${allMethod}
+${allMethod}
 
 }

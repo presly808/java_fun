@@ -1,6 +1,8 @@
-package ua.artcode.model.test;
+package ua.artcode.process;
 
 import ua.artcode.dynamic_compile.MethodInvoker;
+import ua.artcode.model.test.DataPoint;
+import ua.artcode.model.test.TestCase;
 
 import java.util.List;
 

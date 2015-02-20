@@ -18,6 +18,7 @@ import ua.artcode.model.common.TaskMethod;
 import ua.artcode.model.test.DataPoint;
 import ua.artcode.model.test.TestArg;
 import ua.artcode.model.test.TestCase;
+import ua.artcode.preprocess.TaskParserUtils;
 import ua.artcode.process.TaskRunFacade;
 
 import javax.servlet.http.HttpServlet;
@@ -44,7 +45,7 @@ public class TaskController {
     }
 
     @RequestMapping(value = "/add-task.do",method = RequestMethod.POST)
-    public String addTask(ModelAndView modelAndView, HttpServletRequest request, HttpServletResponse response){
+    public String addTask(HttpServletRequest request, HttpServletResponse response){
 
         String taskName = request.getParameter("task_name");
         String taskDescription = request.getParameter("task_description");
@@ -55,6 +56,14 @@ public class TaskController {
 
         //TODO validate parameters, must have null checker
 
+        Task task = parseTask(taskName, taskDescription, methodName, methodSignature, dataPoints);
+
+        dataHolder.addTask(task);
+
+        return "redirect:/index.html";
+    }
+
+    private Task parseTask(String taskName, String taskDescription, String methodName, String methodSignature, String dataPoints) {
         Task task = new Task();
         task.setTitle(taskName);
         task.setDescription(taskDescription);
@@ -88,16 +97,13 @@ public class TaskController {
         dataPoint.setReal(strDataPoint[0]);
         testCase.addDataPoint(dataPoint);
 
-        taskMethod.setMethodBody(genMethodBody(methodName, dataPoint));
+        taskMethod.setMethodBody(TaskParserUtils.genMethodBody(methodName, dataPoint));
 
         task.setTestCase(testCase);
         task.setTaskMethod(taskMethod);
         String accessKey = UUID.randomUUID().toString().substring(0,6);
         task.setAccessKey(accessKey);
-
-        dataHolder.addTask(task);
-
-        return "redirect:/index.html";
+        return task;
     }
 
     @RequestMapping(value = "/list.do", method = RequestMethod.GET)
@@ -120,8 +126,8 @@ public class TaskController {
         try {
             runner.runTask(task,methodBody);
             modelMap.addAttribute("testCase", task.getTestCase());
-            modelMap.addAttribute("inArg", buildArgs(task.getTaskMethod().getMethodName(),
-                                                    task.getTestCase().getDataPointList().get(0).getIn()));
+            modelMap.addAttribute("inArg", TaskParserUtils.buildArgs(task.getTaskMethod().getMethodName(),
+                    task.getTestCase().getDataPointList().get(0).getIn()));
         } catch (CompilationException e) {
             e.printStackTrace();
         }
@@ -136,34 +142,7 @@ public class TaskController {
         this.runner = runner;
     }
 
-    private String genMethodBody(String methodName, DataPoint dataPoint){
-        String template = String.format("public %s %s(", dataPoint.getExpected().getType(), methodName);
 
-        java.util.List<TestArg> argList = dataPoint.getIn();
-
-        if(argList.isEmpty()){
-            return template + "){\n}";
-        }
-
-        int last = argList.size() - 1;
-        for(int i = 0; i < last; i++){
-            template += argList.get(i).getType() + " " + argList.get(i).getName() + ",";
-        }
-        template += argList.get(last).getType() + " " + argList.get(last).getName() + ") {\n}";
-        return template;
-    }
-
-    private String buildArgs(String methodName, java.util.List<TestArg> args){
-        methodName = methodName + "(";
-        int last = args.size() - 1;
-        for(int i = 0; i < last; i++){
-
-            methodName += args.get(i).getValue()+ ",";
-        }
-
-        methodName += args.get(last).getValue() + ")";
-        return methodName;
-    }
 
 
 

@@ -7,7 +7,8 @@
 *.iml
 
 #project
-/temp
+/temp/
+/target/
 
 # Package Files #
 *.jar

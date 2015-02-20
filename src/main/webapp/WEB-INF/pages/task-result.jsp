@@ -10,7 +10,7 @@
         <th>in args</th>
         <th>real</th>
         <th>expected</th>
-        <th>Done</th>
+        <th>done</th>
     </tr>
     <c:forEach var="dataPoint" items="${testCase.dataPointList}" >
         <tr>
