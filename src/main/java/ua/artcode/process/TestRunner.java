@@ -15,7 +15,7 @@ public class TestRunner {
     public static TestCase run(MethodInvoker method, TestCase testCase){
         List<DataPoint> steps = testCase.getDataPointList();
 
-        //TODO refactor this approach
+        //TODO refactor this approach generate test result, dont modify exists data
 
         for(DataPoint dataPoint : steps){
             Object[] convertedArg = dataPoint.toArray();

@@ -44,17 +44,17 @@ public class TaskRunFacade {
 
         //TODO refactor this section
 
-        String className = "_" + task.getTaskMethod().getMethodName() + String.valueOf(System.currentTimeMillis()).substring(8);
-        String to = srcRoot.getPath()+ "/" + className + ".java";
+        String className = generateMagicTempClassName(task);
+        String generatedSrcFile = srcRoot.getPath()+ "/" + className + ".java";
 
 
         String methodName = task.getTaskMethod().getMethodName();
 
         //TODO refactor getting argsForTemplate
         List<TestArg> argsForTemplate = task.getTestCase().getDataPointList().get(0).getIn();
-        templateProcessor.process(templatePath, to, className, methodName, argsForTemplate, method);
+        templateProcessor.process(templatePath, generatedSrcFile, className, methodName, argsForTemplate, method);
 
-        dynamicCompiler.compile(to);
+        dynamicCompiler.compile(generatedSrcFile);
 
         Class cl = BaseClassLoader.uriLoadClass(srcRoot, className);
 
@@ -68,6 +68,10 @@ public class TaskRunFacade {
             e.printStackTrace();
         }
 
+    }
+
+    private String generateMagicTempClassName(Task task) {
+        return "_" + task.getTaskMethod().getMethodName() + String.valueOf(System.currentTimeMillis()).substring(8);
     }
 
     public TemplateProcessor getTemplateProcessor() {
